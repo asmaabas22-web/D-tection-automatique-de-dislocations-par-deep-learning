@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTM - Plateforme d'Analyse ECCI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ltm-blue: #0055a4;
+            --dislo-blanche: #22c55e;
+            --dislo-noire: #ef4444;
+            --dislo-mixte: #3b82f6;
+            --density-color: #8b5cf6;
+            --bg-light: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            border-bottom: 2px solid var(--ltm-blue);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo-ltm {
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .header-info h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--ltm-blue);
+            text-transform: uppercase;
+        }
+
+        .header-info p {
+            color: #64748b;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .upload-area {
+            background: white;
+            border: 1.5px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            transition: 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--ltm-blue);
+            background: #fdfdfd;
+        }
+
+        .upload-icon {
+            font-size: 26px;
+        }
+
+        .upload-area h2 {
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .control-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .control-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+        }
+
+        .control-group small {
+            display: block;
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            border-bottom: 4px solid #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .stat-card.total {
+            border-color: var(--ltm-blue);
+            background: #f0f7ff;
+        }
+
+        .dot-incertain {
+            background: #facc15;
+        }
+
+        .stat-card.incertain {
+            border-color: #facc15;
+        }
+        .stat-card.blanche {
+            border-color: var(--dislo-blanche);
+        }
+
+        .stat-card.noire {
+            border-color: var(--dislo-noire);
+        }
+
+        .stat-card.mixte {
+            border-color: var(--dislo-mixte);
+        }
+
+        .stat-card.density {
+            border-color: var(--density-color);
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .stat-card.total .stat-value {
+            color: var(--ltm-blue);
+        }
+
+        .info-box {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            color: #475569;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .info-box strong {
+            color: var(--ltm-blue);
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .image-box {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .image-box h3 {
+            font-size: 0.8rem;
+            color: #475569;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .image-box img {
+            width: 100%;
+            border-radius: 6px;
+            display: block;
+            background: #000;
+        }
+
+        #processing {
+            display: none;
+            text-align: center;
+            color: var(--ltm-blue);
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        #results {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .images-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+        .extra-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .extra-box {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            font-size: 0.85rem;
+        }
+
+        .extra-box h3 {
+            color: var(--ltm-blue);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 6px 0;
+        }
+
+        .color-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-blanc { background: #22c55e; }
+        .dot-noir { background: #ef4444; }
+        .dot-mixte { background: #3b82f6; }
+        .dot-unet { background: #ff0000; }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-table td {
+            padding: 6px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-table td:last-child {
+            text-align: right;
+            font-weight: 700;
+        }
+
+        .buttons-row {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .export-btn {
+            padding: 12px 25px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .export-btn:hover {
+            background: #15803d;
+        }
+
+
+        .image-box img {
+        cursor: zoom-in;
+        }
+
+        #zoomModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            padding: 30px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #zoomModal img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 8px;
+            background: white;
+            cursor: zoom-out;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-left">
+        <img src="logo_ltm.png" alt="LTM Logo" class="logo-ltm">
+        <div class="header-info">
+            <h1>Laboratoire des Technologies de la Microélectronique</h1>
+            <p>Analyse ECCI — Détection et classification automatique des dislocations</p>
+        </div>
+    </div>
+
+    <div style="text-align:right">
+        <span style="font-size:0.75rem; font-weight:bold; color:#94a3b8;">
+            U-Net + ResNet34 v2.0
+        </span>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <span class="upload-icon">📥</span>
+        <h2>Sélectionner une image ECCI / SEM pour analyse (TIF, PNG, JPG)</h2>
+        <input
+            type="file"
+            id="fileInput"
+            accept=".tif,.tiff,.png,.jpg,.jpeg"
+            style="display:none"
+            onchange="handleFileUpload(event)"
+        >
+    </div>
+
+    <div class="control-panel">
+        <div class="control-group">
+            <label>Largeur physique de l'image (µm)</label>
+            <input
+                type="number"
+                id="imageWidthUm"
+                value="5.716"
+                step="0.001"
+                min="0.001"
+                onchange="reanalyzeCurrentImage()"
+            >
+            <small>Cette valeur sert à calculer la taille pixel, la surface analysée et la densité.</small>
+        </div>
+
+        <div class="control-group">
+            <label>
+                Seuil U-Net :
+                <span id="thresholdValue">0.15</span>
+            </label>
+
+            <input
+                type="range"
+                id="threshold"
+                min="0.05"
+                max="0.30"
+                step="0.01"
+                value="0.15"
+                oninput="document.getElementById('thresholdValue').textContent = this.value"
+                onchange="reanalyzeCurrentImage()"
+            >
+
+            <small>
+                Diminuez le seuil si peu de dislocations sont détectées.
+                Augmentez-le s’il y a trop de faux positifs.
+            </small>
+        </div>
+    </div>
+
+    <div id="processing">
+        ⚙️ Analyse en cours ...
+    </div>
+
+    <div id="results">
+        
+
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <span class="stat-label">Total dislocations</span>
+                <div class="stat-value" id="totalDislo">0</div>
+            </div>
+
+            <div class="stat-card blanche">
+                <span class="stat-label">Dislo. blanches</span>
+                <div class="stat-value" id="blancheCount">0</div>
+            </div>
+
+            <div class="stat-card noire">
+                <span class="stat-label">Dislo. noires</span>
+                <div class="stat-value" id="noireCount">0</div>
+            </div>
+
+            <div class="stat-card mixte">
+                <span class="stat-label">Dislo. mixtes</span>
+                <div class="stat-value" id="mixteCount">0</div>
+            </div>
+
+            <div class="stat-card density">
+                <span class="stat-label">Densité / mm²</span>
+                <div class="stat-value" id="densityMm2">0</div>
+            </div>
+            <div class="stat-card incertain">
+                <span class="stat-label">Incertain</span>
+                <div class="stat-value" id="incertainCount">0</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p><strong>Image traitée :</strong> <span id="imageName">Aucune</span></p>
+            <p><strong>Seuil utilisé :</strong> <span id="usedThreshold">0</span></p>
+            <p><strong>Surface analysée :</strong> <span id="surfaceValue">0</span> mm²</p>
+            <p><strong>Taille pixel :</strong> <span id="pixelSizeValue">0</span> µm/pixel</p>
+            <p><strong>Dimensions image :</strong> <span id="imageDimensions">0 × 0</span> pixels</p>
+        </div>
+         
+         <div class="extra-grid">
+
+            <div class="extra-box">
+                
+                <h3>Probabilités U-Net</h3>
+                <p><strong>Probabilité min :</strong> <span id="probMin">0</span></p>
+                <p><strong>Probabilité max :</strong> <span id="probMax">0</span></p>
+                <p><strong>Probabilité moyenne :</strong> <span id="probMean">0</span></p>
+            </div>
+
+            <div class="extra-box">
+                <h3>Légende des couleurs</h3>
+                
+                <div class="legend-item"><span class="color-dot dot-blanc"></span> Dislocation blanche</div>
+                <div class="legend-item"><span class="color-dot dot-noir"></span> Dislocation noire</div>
+                <div class="legend-item"><span class="color-dot dot-mixte"></span> Dislocation mixte</div>
+                <div class="legend-item"><span class="color-dot dot-incertain"></span>Classe incertaine</div>
+            </div>
+
+            <div class="extra-box">
+                <h3>Tableau récapitulatif</h3>
+                <table class="summary-table">
+                    <tr><td>Blanches</td><td id="tabBlanc">0</td></tr>
+                    <tr><td>Noires</td><td id="tabNoir">0</td></tr>
+                    <tr><td>Mixtes</td><td id="tabMixte">0</td></tr>
+                    <tr><td>Incertains</td><td id="tabIncertain">0</td></tr>
+                    <tr><td>Total</td><td id="tabTotal">0</td></tr>
+                </table>
+            </div>
+
+        </div>
+
+
+        <div class="images-grid">
+            <div class="image-box">
+                <h3>Image prétraitée CLAHE</h3>
+                <img id="originalImage" onclick="openZoom(this.src)">
+            </div>
+
+            <div class="image-box">
+                <h3>Overlay U-Net</h3>
+                <img id="maskImage" onclick="openZoom(this.src)">
+            </div>
+
+            <div class="image-box">
+                <h3>Overlay U-Net + ResNet34</h3>
+                <img id="overlayImage" onclick="openZoom(this.src)">
+            </div>
+        </div>
+        <div class="buttons-row">
+            <button class="export-btn" onclick="downloadOverlay()">
+                💾 Télécharger l'image résultat
+            </button>
+
+            <button class="export-btn" onclick="downloadPDF()">
+                📄 Télécharger le rapport PDF
+            </button>
+        </div>
+
+
+
+    </div>
+</div>
+
+<script>
+    let lastResults = null;
+    function reanalyzeCurrentImage() {
+        const fileInput = document.getElementById('fileInput');
+
+        if (fileInput.files.length > 0) {
+            handleFileUpload({ target: fileInput });
+        }
+    }
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const imageWidth = document.getElementById('imageWidthUm').value;
+        const threshold = document.getElementById('threshold').value;
+
+        if (!imageWidth || parseFloat(imageWidth) <= 0) {
+            alert("Veuillez entrer une largeur physique valide.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('image_width_um', imageWidth);
+        formData.append('threshold', threshold);
+
+        document.getElementById('processing').style.display = 'block';
+        document.getElementById('results').style.display = 'none';
+
+        fetch('/process', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Erreur lors du traitement");
+            }
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById('processing').style.display = 'none';
+
+            if (data.success) {
+                document.getElementById('imageName').textContent =
+                    data.image_name || "Image inconnue";
+
+                document.getElementById('originalImage').src =
+                    'data:image/png;base64,' + data.original_image;
+
+                document.getElementById('maskImage').src =
+                    'data:image/png;base64,' + data.overlay_unet_image;
+
+                document.getElementById('overlayImage').src =
+                    'data:image/png;base64,' + data.overlay_image;
+
+                document.getElementById('totalDislo').textContent =
+                    data.total_dislo || 0;
+
+                document.getElementById('blancheCount').textContent =
+                    data.dislo_blanche || 0;
+
+                document.getElementById('noireCount').textContent =
+                    data.dislo_noire || 0;
+
+                document.getElementById('mixteCount').textContent =
+                    data.dislo_mixte || 0;
+
+                document.getElementById('incertainCount').textContent =
+                    data.dislo_incertain || 0;
+                document.getElementById('densityMm2').textContent =
+                    data.density_mm2 ? data.density_mm2.replace("e+", "×10^") : 0;
+
+                document.getElementById('usedThreshold').textContent =
+                    data.threshold || threshold;
+
+                document.getElementById('surfaceValue').textContent =
+                    data.surface_mm2 || 0;
+
+                document.getElementById('pixelSizeValue').textContent =
+                    data.pixel_size_um || 0;
+                lastResults = data;
+
+                document.getElementById('probMin').textContent =
+                    data.prob_min ? data.prob_min.toExponential(2) : 0;
+
+                document.getElementById('probMax').textContent =
+                    data.prob_max ? data.prob_max.toFixed(3) : 0;
+
+                document.getElementById('probMean').textContent =
+                    data.prob_mean ? data.prob_mean.toExponential(2) : 0;
+
+                document.getElementById('tabBlanc').textContent = data.dislo_blanche || 0;
+                document.getElementById('tabNoir').textContent = data.dislo_noire || 0;
+                document.getElementById('tabMixte').textContent = data.dislo_mixte || 0;
+                document.getElementById('tabIncertain').textContent = data.dislo_incertain || 0;
+                document.getElementById('tabTotal').textContent = data.total_dislo || 0;
+                if (data.image_dimensions) {
+                    document.getElementById('imageDimensions').textContent =
+                        data.image_dimensions.width + " × " + data.image_dimensions.height;
+                }
+
+                document.getElementById('results').style.display = 'block';
+            } else {
+                alert("Erreur serveur : " + data.error);
+            }
+        })
+        .catch(err => {
+            document.getElementById('processing').style.display = 'none';
+            console.error(err);
+            alert("Erreur de communication avec le serveur Flask. Vérifie que l'application est bien lancée sur le port 8082.");
+        });
+    }
+    function downloadPDF() {
+        window.location.href = "/download_pdf";
+    }
+
+
+    function downloadOverlay() {
+        const img = document.getElementById("overlayImage");
+
+        if (!img || !img.src) {
+            alert("Aucune image résultat disponible.");
+            return;
+        }
+
+        const a = document.createElement("a");
+        a.href = img.src;
+        a.download = "image_resultat_dislocations.png";
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function openZoom(src) {
+        const modal = document.getElementById("zoomModal");
+        const zoomImg = document.getElementById("zoomImage");
+
+        zoomImg.src = src;
+        modal.style.display = "flex";
+    }
+
+    function closeZoom() {
+        document.getElementById("zoomModal").style.display = "none";
+    }
+</script>
+<div id="zoomModal" onclick="closeZoom()">
+    <img id="zoomImage">
+</div>
+
+</body>
+</html>
