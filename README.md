@@ -74,29 +74,19 @@ Le pipeline est constitué des étapes suivantes :
 
 # 💻 Installation
 
-## 1. Cloner le dépôt
+### 1. Cloner le dépôt
 
 ```bash
 git clone https://github.com/asmaabas22-web/D-tection-automatique-de-dislocations-par-deep-learning.git
-
 cd D-tection-automatique-de-dislocations-par-deep-learning
-```
 
-## 2. Créer un environnement Python
+## 2. Créer un environnement
 
-```bash
-conda create -n dislocation-env python=3.10 -y
+conda env create -f environment.yml
+
+## 3.Activer l'environnement
 
 conda activate dislocation-env
-```
-
-## 3. Installer les dépendances
-
-```bash
-pip install -r requirements.txt
-```
-
----
 
 # 🚀 Lancer l'application
 
