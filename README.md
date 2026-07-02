@@ -1,85 +1,167 @@
-# Détection et classification automatiques des dislocations sur des images ECCI
+# 🔬 Détection et classification automatiques des dislocations sur des images ECCI
 
 ## Présentation
 
-Ce projet a été réalisé dans le cadre de mon stage de Master 1 au Laboratoire des Technologies de la Microélectronique (LTM).
+Ce projet a été réalisé dans le cadre de mon stage de **Master 1 MISTRE** au **Laboratoire des Technologies de la Microélectronique (LTM)** de l'Université Grenoble Alpes.
 
-L'objectif est de développer une chaîne complète de traitement permettant de détecter automatiquement les dislocations présentes dans des images ECCI (*Electron Channeling Contrast Imaging*), puis de les classifier en trois catégories (blanches, noires et mixtes) grâce à des techniques de Deep Learning.
+L'objectif est de développer une chaîne complète de traitement permettant de détecter automatiquement les dislocations présentes dans des images **ECCI (Electron Channeling Contrast Imaging)**, puis de les classifier en trois catégories (**blanches**, **noires** et **mixtes**) grâce à des techniques de **Deep Learning**.
+
+Le pipeline combine un réseau **U-Net** pour la segmentation des dislocations et un réseau **ResNet34** pour leur classification.
 
 ---
 
-## Pipeline de traitement
+# 📁 Structure du projet
+
+```text
+📦 Detection-dislocations-ECCI
+│
+├── README.md
+├── requirements.txt
+├── ApplicationLTM.py
+├── index3.html
+│
+├── code/
+│   ├── split_dataset_colab.ipynb
+│   ├── 03_train_unet_stable.ipynb
+│   ├── create_classification_dataset.py
+│   ├── equilibrage_claude.ipynb
+│   ├── TRAIN_RESNET_FINAL.ipynb
+│   └── ...
+│
+├── models/
+│   ├── unet_binary_dislocation_stable_A.pth
+│   └── resnet34_ecci_1.pth
+│
+├── uploads/
+│
+└── results/
+```
+
+---
+
+# ⚙️ Pipeline de traitement
+
+Le pipeline est constitué des étapes suivantes :
 
 1. Préparation du jeu de données
 2. Entraînement du modèle U-Net (segmentation binaire)
-3. Création du jeu de données pour la classification
-4. Entraînement du modèle ResNet34
-5. Développement d'une application web avec Flask
-6. Calcul automatique de la densité de dislocations
-7. Évaluation de la robustesse du système
+3. Extraction automatique des patches
+4. Création du jeu de données de classification
+5. Entraînement du modèle ResNet34
+6. Développement de l'application web Flask
+7. Calcul automatique de la densité de dislocations
+8. Génération d'un rapport PDF
+9. Évaluation de la robustesse du système (bruit et résolution)
 
 ---
 
-## Technologies utilisées
+# 🛠 Technologies utilisées
 
 - Python
 - PyTorch
+- Torchvision
 - Segmentation Models PyTorch
 - OpenCV
 - Albumentations
-- Flask
 - NumPy
+- Pandas
 - Matplotlib
+- Pillow
+- Flask
+- ReportLab
 
 ---
 
-## Structure du projet
+# 💻 Installation
 
-```
-code/
-│
-├── split_dataset_colab.ipynb
-├── 03_train_unet_stable.ipynb
-├── create_classification_dataset.py
-├── equilibrage_claude.ipynb
-└── TRAIN_RESNET_FINAL.ipynb
+## 1. Cloner le dépôt
 
-ApplicationLTM.py
-index3.html
+```bash
+git clone https://github.com/asmaabas22-web/D-tection-automatique-de-dislocations-par-deep-learning.git
+
+cd D-tection-automatique-de-dislocations-par-deep-learning
 ```
 
----
+## 2. Créer un environnement Python
 
-## Fonctionnement
+```bash
+conda create -n dislocation-env python=3.10 -y
 
-Le pipeline développé comprend les étapes suivantes :
+conda activate dislocation-env
+```
 
-- Prétraitement des images ECCI (CLAHE)
-- Détection automatique des dislocations par U-Net
-- Extraction des objets détectés
-- Classification des dislocations (blanche, noire ou mixte) avec ResNet34
-- Calcul automatique de la densité de dislocations
-- Génération d'un rapport PDF des résultats
-- Visualisation des résultats via une interface web Flask
+## 3. Installer les dépendances
 
----
-
-## Résultats obtenus
-
-Le système développé permet de :
-
-- détecter automatiquement les dislocations sur des images ECCI ;
-- classifier chaque dislocation en trois catégories (blanche, noire ou mixte) ;
-- calculer automatiquement la densité de dislocations ;
-- générer un rapport PDF contenant les résultats de l'analyse ;
-- évaluer la robustesse du pipeline face au bruit et à la diminution de la résolution des images.
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## Auteur
+# 🚀 Lancer l'application
+
+```bash
+python ApplicationLTM.py
+```
+
+Puis ouvrir dans le navigateur :
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+# 🌐 Utilisation
+
+1. Charger une image ECCI.
+2. Lancer la détection automatique.
+3. Le modèle U-Net génère un masque de segmentation.
+4. Les dislocations détectées sont extraites automatiquement.
+5. Le modèle ResNet34 classe chaque dislocation.
+6. La densité de dislocations est calculée automatiquement.
+7. Un rapport PDF est généré.
+
+---
+
+# 📊 Fonctionnalités
+
+✔ Détection automatique des dislocations
+
+✔ Segmentation par U-Net
+
+✔ Extraction automatique des patches
+
+✔ Classification (blanche, noire, mixte)
+
+✔ Calcul automatique de la densité
+
+✔ Génération d'un rapport PDF
+
+✔ Interface Web Flask
+
+✔ Compatible CPU et GPU
+
+---
+
+# 📈 Résultats
+
+Le système permet :
+
+- la détection automatique des dislocations sur des images ECCI ;
+- la classification en trois catégories ;
+- le calcul automatique de la densité de dislocations ;
+- la génération d'un rapport PDF complet ;
+- l'évaluation de la robustesse du pipeline face au bruit et à la diminution de la résolution des images.
+
+---
+
+# 📩 Auteur
 
 **Asmaa BASSOU**
 
-Stage de Master 1 MISTRE  
-Laboratoire des Technologies de la Microélectronique (LTM)  
-Université Grenoble Alpes 
+Master 1 MISTRE
+
+Université Grenoble Alpes
+
+2026
