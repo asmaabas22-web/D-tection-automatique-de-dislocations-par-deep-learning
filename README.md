@@ -144,18 +144,6 @@ http://127.0.0.1:5000
 
 ---
 
-# 📈 Résultats
-
-Le système permet :
-
-- la détection automatique des dislocations sur des images ECCI ;
-- la classification en trois catégories ;
-- le calcul automatique de la densité de dislocations ;
-- la génération d'un rapport PDF complet ;
-- l'évaluation de la robustesse du pipeline face au bruit et à la diminution de la résolution des images.
-
----
-
 # 📩 Auteur
 
 **Asmaa BASSOU**
