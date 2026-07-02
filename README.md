@@ -79,17 +79,19 @@ Le pipeline est constitué des étapes suivantes :
 ```bash
 git clone https://github.com/asmaabas22-web/D-tection-automatique-de-dislocations-par-deep-learning.git
 cd D-tection-automatique-de-dislocations-par-deep-learning
-
+```
+```bash
 ## 2. Créer un environnement
 
 conda env create -f environment.yml
-
+```
+```bash
 ## 3.Activer l'environnement
 
 conda activate dislocation-env
 
 # 🚀 Lancer l'application
-
+```
 ```bash
 python ApplicationLTM.py
 ```
