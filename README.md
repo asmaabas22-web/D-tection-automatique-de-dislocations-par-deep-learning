@@ -83,7 +83,7 @@ cd D-tection-automatique-de-dislocations-par-deep-learning
 ```bash
 ## 2. Créer un environnement
 
-conda env create -f environment.yml
+conda env create -f environment.yaml
 ```
 ```bash
 ## 3.Activer l'environnement
